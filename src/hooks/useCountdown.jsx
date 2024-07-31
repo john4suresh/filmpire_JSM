@@ -1,5 +1,5 @@
 /* eslint-disable one-var */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const getReturnValues = (countDown) => {
   // calculate time left
@@ -36,5 +36,18 @@ const useCountDown = (targetDate) => {
 
   return getReturnValues(countDown);
 };
+
+export function useEnterSubmit() {
+    const formRef = useRef(null);
+
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+            formRef.current?.requestSubmit();
+            event.preventDefault();
+        }
+    };
+
+    return { formRef, onKeyDown: handleKeyDown };
+}
 
 export default useCountDown;
